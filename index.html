@@ -228,6 +228,16 @@
             highScores = highScores.slice(0, 10); // Keep only top 10
             updateHighScoreDisplay();
         }
-        
+        function updateHighScoreDisplay() {
+            highscoreListElement.innerHTML = '';
+            
+            if (highScores.length === 0) {
+                const emptyItem = document.createElement('li');
+                emptyItem.className = 'highscore-item';
+                emptyItem.innerHTML = '<span style="color: #888; font-style: italic;">No scores yet!</span>';
+                highscoreListElement.appendChild(emptyItem);
+                return;
+            }
+
 </body>
 </html>
