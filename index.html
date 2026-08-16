@@ -215,11 +215,19 @@
         let flySpawnTimer = 0;
         let lastMoveTime = 0;
         let idleTimer = 0;
-const lilyPads = [
+        const lilyPads = [
             { x: 100, y: canvas.height - 100, size: 60 },
             { x: 300, y: canvas.height - 150, size: 70 },
             { x: 500, y: canvas.height - 120, size: 65 },
             { x: 650, y: canvas.height - 140, size: 60 }
         ];
+         function addHighScore(newScore) {
+            const timestamp = new Date().toLocaleString();
+            highScores.push({ score: newScore, date: timestamp });
+            highScores.sort((a, b) => b.score - a.score);
+            highScores = highScores.slice(0, 10); // Keep only top 10
+            updateHighScoreDisplay();
+        }
+        
 </body>
 </html>
