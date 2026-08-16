@@ -105,5 +105,9 @@
             animation: glow 1s ease-in-out infinite alternate;
             background: rgba(255, 215, 0, 0.3);
         }
+        @keyframes glow {
+            from { box-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
+            to { box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); }
+        }
 </body>
 </html>
