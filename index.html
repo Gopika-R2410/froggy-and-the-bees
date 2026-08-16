@@ -463,6 +463,21 @@
 
             requestAnimationFrame(gameLoop);
         }
+               function endGame(reason) {
+            gameRunning = false;
+            finalScoreElement.textContent = score;
+            checkForNewRecord(score);
+            addHighScore(score);
+            
+            gameOverElement.innerHTML = `
+                <h2>🐸 Game Over! 🐸</h2>
+                <p>${reason}</p>
+                <p>Final Score: <span style="font-weight: bold; color: #2E8B57;">${score}</span></p>
+                <div id="newRecordMessage">${newRecordMessageElement.innerHTML}</div>
+                <button onclick="restartGame()">Play Again</button>
+            `;
+            gameOverElement.style.display = 'block';
+        }
 
 
 
