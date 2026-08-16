@@ -238,6 +238,22 @@
                 highscoreListElement.appendChild(emptyItem);
                 return;
             }
+               highScores.forEach((scoreData, index) => {
+                const listItem = document.createElement('li');
+                listItem.className = 'highscore-item';
+                
+                const isNewest = index === 0 && scoreData.score === score && gameRunning === false;
+                if (isNewest) {
+                    listItem.classList.add('new-record');
+                }
+                
+                const rank = index + 1;
+                const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `${rank}.`;
+                
+                listItem.innerHTML = `
+                    <span class="highscore-rank">${medal}</span>
+                    <span class="highscore-score">${scoreData.score}</span>
+                `;
 
 </body>
 </html>
