@@ -254,6 +254,18 @@
                     <span class="highscore-rank">${medal}</span>
                     <span class="highscore-score">${scoreData.score}</span>
                 `;
+                              listItem.title = `Scored on ${scoreData.date}`;
+                
+                highscoreListElement.appendChild(listItem);
+            });
+        }
+
+        function clearHighScores() {
+            if (confirm('Are you sure you want to clear all high scores?')) {
+                highScores = [];
+                updateHighScoreDisplay();
+            }
+        }
 
 </body>
 </html>
