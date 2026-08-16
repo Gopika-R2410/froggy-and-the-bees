@@ -287,6 +287,39 @@
         document.addEventListener('keyup', (e) => {
             keys[e.key.toLowerCase()] = false;
         });
+       function drawFrog() {
+            const x = frog.x;
+            const y = frog.y - frog.jumpHeight;
+            const size = frog.size;
+
+            ctx.fillStyle = '#32CD32';
+            ctx.beginPath();
+            ctx.arc(x, y, size, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#90EE90';
+            ctx.beginPath();
+            ctx.arc(x, y + 5, size * 0.7, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#228B22';
+            ctx.beginPath();
+            ctx.arc(x - 15, y - 15, 8, 0, Math.PI * 2);
+            ctx.arc(x + 15, y - 15, 8, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = 'black';
+            ctx.beginPath();
+            ctx.arc(x - 15, y - 15, 4, 0, Math.PI * 2);
+            ctx.arc(x + 15, y - 15, 4, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.strokeStyle = '#228B22';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(x, y + 5, 15, 0.2, Math.PI - 0.2);
+            ctx.stroke();
+        }
 
 
 
