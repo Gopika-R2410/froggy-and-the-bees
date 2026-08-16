@@ -320,6 +320,23 @@
             ctx.arc(x, y + 5, 15, 0.2, Math.PI - 0.2);
             ctx.stroke();
         }
+           function drawLilyPads() {
+            lilyPads.forEach(pad => {
+                ctx.fillStyle = '#2E8B57';
+                ctx.beginPath();
+                ctx.ellipse(pad.x, pad.y, pad.size, pad.size * 0.8, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.strokeStyle = '#228B22';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(pad.x, pad.y - pad.size * 0.8);
+                ctx.lineTo(pad.x, pad.y + pad.size * 0.8);
+                ctx.moveTo(pad.x - pad.size, pad.y);
+                ctx.lineTo(pad.x + pad.size, pad.y);
+                ctx.stroke();
+            });
+        }
 
 
 
