@@ -434,6 +434,35 @@
                     scoreElement.textContent = score;
                 }});
         }
+               function gameLoop() {
+            if (!gameRunning) return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            gameTimer++;
+            if (gameTimer % 60 === 0 && timeLeft > 0) { 
+                timeLeft--;
+                timerElement.textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    endGame("Time's up! How many flies can you catch in 60 seconds?");
+                    return;
+                }}
+            updateFrog();
+            updateFlies();
+
+            flySpawnTimer++;
+            const spawnRate = Math.max(60, 120 - (60 - timeLeft) * 2);
+            if (flySpawnTimer > spawnRate) {
+                spawnFly();
+                flySpawnTimer = 0;
+            }
+
+            drawLilyPads();
+            drawFrog();
+            flies.forEach(drawFly);
+
+            requestAnimationFrame(gameLoop);
+        }
 
 
 
