@@ -478,6 +478,26 @@
             `;
             gameOverElement.style.display = 'block';
         }
+        function restartGame() {
+            score = 0;
+            health = 3;
+            timeLeft = 60;
+            gameTimer = 0;
+            idleTimer = 0;
+            scoreElement.textContent = score;
+            healthElement.textContent = health;
+            timerElement.textContent = timeLeft;
+            flies = [];
+            flySpawnTimer = 0;
+            frog.x = canvas.width / 2;
+            frog.y = canvas.height - 80;
+            frog.jumpHeight = 0;
+            frog.isJumping = false;
+            gameRunning = true;
+            gameOverElement.style.display = 'none';
+            newRecordMessageElement.innerHTML = '';
+            gameLoop();
+        }
 
 
 
