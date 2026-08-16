@@ -266,6 +266,21 @@
                 updateHighScoreDisplay();
             }
         }
+               function checkForNewRecord(newScore) {
+            const isNewRecord = highScores.length === 0 || newScore > highScores[0].score;
+            const isTopTen = highScores.length < 10 || newScore > highScores[highScores.length - 1].score;
+            
+            if (isNewRecord) {
+                newRecordMessageElement.innerHTML = '<div class="new-record-text">🎉 NEW HIGH SCORE! 🎉</div>';
+            } else if (isTopTen) {
+                newRecordMessageElement.innerHTML = '<div class="new-record-text">🌟 Made it to Top 10! 🌟</div>';
+            } else {
+                newRecordMessageElement.innerHTML = '';
+            }
+            
+            return isNewRecord || isTopTen;
+        }
+
 
 </body>
 </html>
