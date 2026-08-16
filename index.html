@@ -171,5 +171,12 @@
             <div class="instructions">Use arrow keys or WASD to move • Spacebar to jump • Catch flies, avoid staying still too long!</div>
         </div>
          <canvas id="gameCanvas" width="800" height="600"></canvas>
+         <div class="game-over" id="gameOver">
+            <h2>🐸 Ribbit! Great job! 🐸</h2>
+            <p>Final Score: <span id="finalScore">0</span></p>
+            <div id="newRecordMessage"></div>
+            <button onclick="restartGame()">Play Again</button>
+        </div>
+    </div>
 </body>
 </html>
