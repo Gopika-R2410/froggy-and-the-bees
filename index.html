@@ -337,6 +337,19 @@
                 ctx.stroke();
             });
         }
+               function drawFly(fly) {
+            ctx.fillStyle = 'black';
+            ctx.beginPath();
+            ctx.ellipse(fly.x, fly.y, 6, 10, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.beginPath();
+            ctx.ellipse(fly.x - 8, fly.y - 3, 8, 4, -0.3, 0, Math.PI * 2);
+            ctx.ellipse(fly.x + 8, fly.y - 3, 8, 4, 0.3, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
 
 
 
