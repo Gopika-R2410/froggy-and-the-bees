@@ -358,7 +358,57 @@
                 life: 300 + Math.random() * 200
             });
         }
+      function updateFrog() {
+            if (!gameRunning) return;
 
+            let moved = false;
+            const oldX = frog.x;
+            const oldY = frog.y;
+
+            if (keys['arrowleft'] || keys['a']) {
+                frog.x = Math.max(frog.size, frog.x - frog.speed);
+                moved = true;
+            }
+            if (keys['arrowright'] || keys['d']) {
+                frog.x = Math.min(canvas.width - frog.size, frog.x + frog.speed);
+                moved = true;
+            }
+            if (keys['arrowup'] || keys['w']) {
+                frog.y = Math.max(frog.size, frog.y - frog.speed);
+                moved = true;
+            }
+            if (keys['arrowdown'] || keys['s']) {
+                frog.y = Math.min(canvas.height - frog.size, frog.y + frog.speed);
+                moved = true;
+            }
+            if (moved || (oldX !== frog.x || oldY !== frog.y)) {
+                idleTimer = 0;
+            } else {
+                idleTimer++;
+                if (idleTimer > 300) { 
+                    health--;
+                    healthElement.textContent = health;
+                    idleTimer = 0;
+                    if (health <= 0) {
+                        endGame("You stayed still too long and got eaten by predators!");
+                        return;
+                 }}}
+
+            if (keys[' '] && !frog.isJumping) {
+                frog.isJumping = true;
+                frog.jumpSpeed = -12;
+                moved = true;
+            }
+
+            if (frog.isJumping) {
+                frog.jumpHeight -= frog.jumpSpeed;
+                frog.jumpSpeed += 0.8;
+                
+                if (frog.jumpHeight <= 0) {
+                    frog.jumpHeight = 0;
+                    frog.isJumping = false;
+                    frog.jumpSpeed = 0;
+               }}}
 
 
 </body>
