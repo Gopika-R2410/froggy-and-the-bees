@@ -349,7 +349,15 @@
             ctx.ellipse(fly.x + 8, fly.y - 3, 8, 4, 0.3, 0, Math.PI * 2);
             ctx.fill();
         }
-
+       function spawnFly() {
+            flies.push({
+                x: Math.random() * (canvas.width - 100) + 50,
+                y: Math.random() * (canvas.height - 200) + 50,
+                vx: (Math.random() - 0.5) * 2,
+                vy: (Math.random() - 0.5) * 2,
+                life: 300 + Math.random() * 200
+            });
+        }
 
 
 
