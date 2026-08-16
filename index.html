@@ -409,6 +409,32 @@
                     frog.isJumping = false;
                     frog.jumpSpeed = 0;
                }}}
+        function updateFlies() {
+            flies.forEach((fly, index) => {
+                fly.x += fly.vx;
+                fly.y += fly.vy;
+                fly.life--;
+
+                if (fly.x <= 0 || fly.x >= canvas.width) fly.vx *= -1;
+                if (fly.y <= 0 || fly.y >= canvas.height) fly.vy *= -1;
+
+                if (fly.life <= 0) {
+                    flies.splice(index, 1);
+                    health--;
+                    healthElement.textContent = health;
+                    if (health <= 0) {
+                        endGame("Too many flies escaped! The pond is overrun!");
+                        return;
+                    }}
+
+                const dist = Math.sqrt((fly.x - frog.x) ** 2 + ((fly.y - (frog.y - frog.jumpHeight)) ** 2));
+                if (dist < frog.size + 10) {
+                    flies.splice(index, 1);
+                    score += 10;
+                    scoreElement.textContent = score;
+                }});
+        }
+
 
 
 </body>
