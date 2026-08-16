@@ -184,7 +184,16 @@
         </ul>
         <button class="clear-scores" onclick="clearHighScores()">Clear Scores</button>
     </div>
-     <script>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+        const healthElement = document.getElementById('health');
+        const timerElement = document.getElementById('timer');
+        const gameOverElement = document.getElementById('gameOver');
+        const finalScoreElement = document.getElementById('finalScore');
+        const highscoreListElement = document.getElementById('highscoreList');
+        const newRecordMessageElement = document.getElementById('newRecordMessage');
 
 
 </body>
