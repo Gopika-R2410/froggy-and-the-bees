@@ -16,6 +16,7 @@
             min-height: 100vh;
             gap: 20px;
         }
+
         .game-container {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 20px; 
@@ -24,38 +25,46 @@
             backdrop-filter: blur(10px);
             position: relative;
         }
-         canvas {
+
+        canvas {
             border: 4px solid #228B22;
             border-radius: 15px;
             background: linear-gradient(to bottom, #87CEEB 0%, #90EE90 70%, #228B22 100%);
             display: block;
         }
+
         .controls {
             margin-top: 20px;
             text-align: center;
         }
-            .game-info {
+
+        .game-info {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
         }
-         .score, .health, .timer {
+
+        .score, .health, .timer {
             font-size: 20px;
             color: #2E8B57;
             font-weight: bold;
         }
-         .health {
+
+        .health {
             color: #DC143C;
         }
+
         .timer {
             color: #FF8C00;
         }
-         .instructions {
+
+        .instructions {
             font-size: 16px;
             color: #2E8B57;
             margin-bottom: 10px;
         }
+
         .game-over {
             display: none;
             position: absolute;
@@ -70,6 +79,7 @@
             z-index: 10;
             max-width: 400px;
         }
+
         .highscore-panel {
             background: rgba(255, 255, 255, 0.15);
             border-radius: 15px;
@@ -79,6 +89,7 @@
             width: 220px;
             flex-shrink: 0;
         }
+
         .highscore-title {
             font-size: 18px;
             color: #2E8B57;
@@ -86,12 +97,14 @@
             margin-bottom: 15px;
             text-align: center;
         }
+
         .highscore-list {
             list-style: none;
             padding: 0;
             margin: 0;
         }
-         .highscore-item {
+
+        .highscore-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -101,24 +114,29 @@
             border-radius: 10px;
             font-size: 14px;
         }
+
         .highscore-item.new-record {
             animation: glow 1s ease-in-out infinite alternate;
             background: rgba(255, 215, 0, 0.3);
         }
+
         @keyframes glow {
             from { box-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
             to { box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); }
         }
+
         .highscore-rank {
             font-weight: bold;
             color: #2E8B57;
             min-width: 20px;
         }
+
         .highscore-score {
             font-weight: bold;
             color: #FF8C00;
         }
-         .clear-scores {
+
+        .clear-scores {
             background: #DC143C;
             color: white;
             border: none;
@@ -130,9 +148,11 @@
             width: 100%;
             transition: background 0.3s;
         }
+
         .clear-scores:hover {
             background: #B22222;
         }
+
         button {
             background: #32CD32;
             color: white;
@@ -144,9 +164,11 @@
             margin: 5px;
             transition: background 0.3s;
         }
+
         button:hover {
             background: #228B22;
         }
+
         .new-record-text {
             color: #FFD700;
             font-weight: bold;
@@ -154,15 +176,16 @@
             margin: 10px 0;
             animation: pulse 1s ease-in-out infinite;
         }
+
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.7; }
         }
     </style>
-    </head>
-    <body>
- <div class="game-container"></div>
- <div class="controls">
+</head>
+<body>
+    <div class="game-container">
+        <div class="controls">
             <div class="game-info">
                 <div class="health">❤ Health: <span id="health">3</span></div>
                 <div class="score">🏆 Score: <span id="score">0</span></div>
@@ -170,20 +193,25 @@
             </div>
             <div class="instructions">Use arrow keys or WASD to move • Spacebar to jump • Catch flies, avoid staying still too long!</div>
         </div>
-         <canvas id="gameCanvas" width="800" height="600"></canvas>
-         <div class="game-over" id="gameOver">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        
+        <div class="game-over" id="gameOver">
             <h2>🐸 Ribbit! Great job! 🐸</h2>
             <p>Final Score: <span id="finalScore">0</span></p>
             <div id="newRecordMessage"></div>
             <button onclick="restartGame()">Play Again</button>
         </div>
     </div>
+    
+    <!-- High Score Panel -->
     <div class="highscore-panel">
         <div class="highscore-title">🏆 Top Scores 🏆</div>
         <ul class="highscore-list" id="highscoreList">
+            <!-- High scores will be populated here -->
         </ul>
         <button class="clear-scores" onclick="clearHighScores()">Clear Scores</button>
     </div>
+
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
@@ -194,15 +222,20 @@
         const finalScoreElement = document.getElementById('finalScore');
         const highscoreListElement = document.getElementById('highscoreList');
         const newRecordMessageElement = document.getElementById('newRecordMessage');
-        
+
+        // Game state
         let score = 0;
         let gameRunning = true;
         let keys = {};
         let health = 3;
-        let timeLeft = 60; 
+        let timeLeft = 60; // 60 seconds
         let gameTimer = 0;
+
+        // High scores (stored in memory for this session)
         let highScores = [];
-         const frog = {
+
+        // Frog object
+        const frog = {
             x: canvas.width / 2,
             y: canvas.height - 80,
             size: 40,
@@ -211,23 +244,30 @@
             isJumping: false,
             jumpSpeed: 0
         };
+
+        // Flies array
         let flies = [];
         let flySpawnTimer = 0;
         let lastMoveTime = 0;
         let idleTimer = 0;
+
+        // Lily pads
         const lilyPads = [
             { x: 100, y: canvas.height - 100, size: 60 },
             { x: 300, y: canvas.height - 150, size: 70 },
             { x: 500, y: canvas.height - 120, size: 65 },
             { x: 650, y: canvas.height - 140, size: 60 }
         ];
-         function addHighScore(newScore) {
+
+        // High Score Functions
+        function addHighScore(newScore) {
             const timestamp = new Date().toLocaleString();
             highScores.push({ score: newScore, date: timestamp });
             highScores.sort((a, b) => b.score - a.score);
             highScores = highScores.slice(0, 10); // Keep only top 10
             updateHighScoreDisplay();
         }
+
         function updateHighScoreDisplay() {
             highscoreListElement.innerHTML = '';
             
@@ -238,10 +278,12 @@
                 highscoreListElement.appendChild(emptyItem);
                 return;
             }
-               highScores.forEach((scoreData, index) => {
+
+            highScores.forEach((scoreData, index) => {
                 const listItem = document.createElement('li');
                 listItem.className = 'highscore-item';
                 
+                // Check if this is the most recent score (for highlighting)
                 const isNewest = index === 0 && scoreData.score === score && gameRunning === false;
                 if (isNewest) {
                     listItem.classList.add('new-record');
@@ -254,7 +296,9 @@
                     <span class="highscore-rank">${medal}</span>
                     <span class="highscore-score">${scoreData.score}</span>
                 `;
-                              listItem.title = `Scored on ${scoreData.date}`;
+                
+                // Add tooltip with date
+                listItem.title = `Scored on ${scoreData.date}`;
                 
                 highscoreListElement.appendChild(listItem);
             });
@@ -266,7 +310,8 @@
                 updateHighScoreDisplay();
             }
         }
-               function checkForNewRecord(newScore) {
+
+        function checkForNewRecord(newScore) {
             const isNewRecord = highScores.length === 0 || newScore > highScores[0].score;
             const isTopTen = highScores.length < 10 || newScore > highScores[highScores.length - 1].score;
             
@@ -280,6 +325,8 @@
             
             return isNewRecord || isTopTen;
         }
+
+        // Event listeners
         document.addEventListener('keydown', (e) => {
             keys[e.key.toLowerCase()] = true;
         });
@@ -287,46 +334,56 @@
         document.addEventListener('keyup', (e) => {
             keys[e.key.toLowerCase()] = false;
         });
-       function drawFrog() {
+
+        // Draw functions
+        function drawFrog() {
             const x = frog.x;
             const y = frog.y - frog.jumpHeight;
             const size = frog.size;
 
+            // Frog body (green circle)
             ctx.fillStyle = '#32CD32';
             ctx.beginPath();
             ctx.arc(x, y, size, 0, Math.PI * 2);
             ctx.fill();
 
+            // Frog belly (lighter green)
             ctx.fillStyle = '#90EE90';
             ctx.beginPath();
             ctx.arc(x, y + 5, size * 0.7, 0, Math.PI * 2);
             ctx.fill();
 
+            // Eyes
             ctx.fillStyle = '#228B22';
             ctx.beginPath();
             ctx.arc(x - 15, y - 15, 8, 0, Math.PI * 2);
             ctx.arc(x + 15, y - 15, 8, 0, Math.PI * 2);
             ctx.fill();
 
+            // Eye pupils
             ctx.fillStyle = 'black';
             ctx.beginPath();
             ctx.arc(x - 15, y - 15, 4, 0, Math.PI * 2);
             ctx.arc(x + 15, y - 15, 4, 0, Math.PI * 2);
             ctx.fill();
 
+            // Mouth
             ctx.strokeStyle = '#228B22';
             ctx.lineWidth = 3;
             ctx.beginPath();
             ctx.arc(x, y + 5, 15, 0.2, Math.PI - 0.2);
             ctx.stroke();
         }
-           function drawLilyPads() {
+
+        function drawLilyPads() {
             lilyPads.forEach(pad => {
+                // Lily pad
                 ctx.fillStyle = '#2E8B57';
                 ctx.beginPath();
                 ctx.ellipse(pad.x, pad.y, pad.size, pad.size * 0.8, 0, 0, Math.PI * 2);
                 ctx.fill();
 
+                // Lily pad detail
                 ctx.strokeStyle = '#228B22';
                 ctx.lineWidth = 2;
                 ctx.beginPath();
@@ -337,19 +394,23 @@
                 ctx.stroke();
             });
         }
-               function drawFly(fly) {
+
+        function drawFly(fly) {
+            // Fly body
             ctx.fillStyle = 'black';
             ctx.beginPath();
             ctx.ellipse(fly.x, fly.y, 6, 10, 0, 0, Math.PI * 2);
             ctx.fill();
 
+            // Wings
             ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
             ctx.beginPath();
             ctx.ellipse(fly.x - 8, fly.y - 3, 8, 4, -0.3, 0, Math.PI * 2);
             ctx.ellipse(fly.x + 8, fly.y - 3, 8, 4, 0.3, 0, Math.PI * 2);
             ctx.fill();
         }
-       function spawnFly() {
+
+        function spawnFly() {
             flies.push({
                 x: Math.random() * (canvas.width - 100) + 50,
                 y: Math.random() * (canvas.height - 200) + 50,
@@ -358,13 +419,15 @@
                 life: 300 + Math.random() * 200
             });
         }
-      function updateFrog() {
+
+        function updateFrog() {
             if (!gameRunning) return;
 
             let moved = false;
             const oldX = frog.x;
             const oldY = frog.y;
 
+            // Handle movement
             if (keys['arrowleft'] || keys['a']) {
                 frog.x = Math.max(frog.size, frog.x - frog.speed);
                 moved = true;
@@ -381,19 +444,24 @@
                 frog.y = Math.min(canvas.height - frog.size, frog.y + frog.speed);
                 moved = true;
             }
+
+            // Track movement for idle penalty
             if (moved || (oldX !== frog.x || oldY !== frog.y)) {
                 idleTimer = 0;
             } else {
                 idleTimer++;
-                if (idleTimer > 300) { 
+                if (idleTimer > 300) { // 5 seconds of no movement
                     health--;
                     healthElement.textContent = health;
                     idleTimer = 0;
                     if (health <= 0) {
                         endGame("You stayed still too long and got eaten by predators!");
                         return;
-                 }}}
+                    }
+                }
+            }
 
+            // Handle jumping animation
             if (keys[' '] && !frog.isJumping) {
                 frog.isJumping = true;
                 frog.jumpSpeed = -12;
@@ -408,16 +476,21 @@
                     frog.jumpHeight = 0;
                     frog.isJumping = false;
                     frog.jumpSpeed = 0;
-               }}}
+                }
+            }
+        }
+
         function updateFlies() {
             flies.forEach((fly, index) => {
                 fly.x += fly.vx;
                 fly.y += fly.vy;
                 fly.life--;
 
+                // Bounce off walls
                 if (fly.x <= 0 || fly.x >= canvas.width) fly.vx *= -1;
                 if (fly.y <= 0 || fly.y >= canvas.height) fly.vy *= -1;
 
+                // Remove old flies (they escape!)
                 if (fly.life <= 0) {
                     flies.splice(index, 1);
                     health--;
@@ -425,31 +498,41 @@
                     if (health <= 0) {
                         endGame("Too many flies escaped! The pond is overrun!");
                         return;
-                    }}
+                    }
+                }
 
+                // Check collision with frog
                 const dist = Math.sqrt((fly.x - frog.x) ** 2 + ((fly.y - (frog.y - frog.jumpHeight)) ** 2));
                 if (dist < frog.size + 10) {
                     flies.splice(index, 1);
                     score += 10;
                     scoreElement.textContent = score;
-                }});
+                }
+            });
         }
-               function gameLoop() {
+
+        function gameLoop() {
             if (!gameRunning) return;
 
+            // Clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+            // Update timer
             gameTimer++;
-            if (gameTimer % 60 === 0 && timeLeft > 0) { 
+            if (gameTimer % 60 === 0 && timeLeft > 0) { // 60 frames = 1 second
                 timeLeft--;
                 timerElement.textContent = timeLeft;
                 if (timeLeft <= 0) {
                     endGame("Time's up! How many flies can you catch in 60 seconds?");
                     return;
-                }}
+                }
+            }
+
+            // Update game objects
             updateFrog();
             updateFlies();
 
+            // Spawn flies (more frequent as time runs out)
             flySpawnTimer++;
             const spawnRate = Math.max(60, 120 - (60 - timeLeft) * 2);
             if (flySpawnTimer > spawnRate) {
@@ -457,15 +540,19 @@
                 flySpawnTimer = 0;
             }
 
+            // Draw everything
             drawLilyPads();
             drawFrog();
             flies.forEach(drawFly);
 
             requestAnimationFrame(gameLoop);
         }
-               function endGame(reason) {
+
+        function endGame(reason) {
             gameRunning = false;
             finalScoreElement.textContent = score;
+            
+            // Check for new record and add to high scores
             checkForNewRecord(score);
             addHighScore(score);
             
@@ -478,6 +565,7 @@
             `;
             gameOverElement.style.display = 'block';
         }
+
         function restartGame() {
             score = 0;
             health = 3;
@@ -498,8 +586,11 @@
             newRecordMessageElement.innerHTML = '';
             gameLoop();
         }
-   updateHighScoreDisplay();
 
+        // Initialize high score display
+        updateHighScoreDisplay();
+
+        // Start the game
         gameLoop();
     </script>
 </body>
